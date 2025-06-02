@@ -2,98 +2,97 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dynamic Booking Calendar</title>
+  <title>Mini Booking Calendar</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      background: #f5f6fa;
+      background: transparent;
       font-family: 'Segoe UI', Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
       margin: 0;
+      padding: 0;
     }
     .calendar-container {
       background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 8px 32px rgba(30,41,59,0.12);
-      padding: 2.5rem 2rem 2rem 2rem;
-      max-width: 430px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(30,41,59,0.15);
+      padding: 1rem 0.5rem 0.7rem 0.5rem;
+      max-width: 320px;
       width: 100%;
-      transition: box-shadow 0.3s;
-      overflow: hidden;
+      min-width: 220px;
+      margin: 0 auto;
+      box-sizing: border-box;
     }
     .calendar-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.2rem;
+      margin-bottom: 0.5rem;
     }
     .calendar-header button {
       background: none;
       border: none;
       color: #2d8f4e;
-      font-size: 2rem;
+      font-size: 1.2rem;
       cursor: pointer;
-      padding: 0.2em 0.7em;
+      padding: 0.18em 0.6em;
       border-radius: 50%;
       transition: background 0.2s;
-      min-width: 40px;
-      min-height: 40px;
+      min-width: 32px;
+      min-height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .calendar-header button:active, .calendar-header button:focus {
+      background: #e6f7ee;
       outline: none;
     }
-    .calendar-header button:active {
-      background: #e6f7ee;
-    }
     .calendar-title {
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: bold;
       color: #2d8f4e;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       text-align: center;
       flex: 1;
-      transition: color 0.3s;
     }
     .calendar-table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0.3em 0.5em;
+      border-spacing: 0.18em 0.25em;
       table-layout: fixed;
-      margin-bottom: 0.5em;
+      margin-bottom: 0.1em;
       user-select: none;
     }
     .calendar-table th, .calendar-table td {
       width: 14.28%;
       text-align: center;
-      padding: 0.7em 0;
+      padding: 0.35em 0;
       position: relative;
-      font-size: 1.1rem;
+      font-size: 0.97rem;
       border-radius: 50%;
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
       z-index: 1;
       cursor: pointer;
+      min-width: 28px;
+      min-height: 28px;
     }
     .calendar-table th {
       color: #888;
       font-weight: 600;
       background: none;
       cursor: default;
-      padding: 0.4em 0;
-      font-size: 1em;
-      letter-spacing: 0.05em;
+      padding: 0.22em 0;
+      font-size: 0.93em;
+      letter-spacing: 0.03em;
     }
     .calendar-table td {
       background: none;
       color: #22223b;
-      height: 44px;
+      height: 30px;
       outline: none;
     }
     .calendar-table td.today {
-      border: 1.5px solid #2d8f4e;
+      border: 1.2px solid #2d8f4e;
       font-weight: bold;
       background: #e6f7ee;
     }
@@ -101,7 +100,7 @@
       background: #2d8f4e;
       color: #fff;
       font-weight: bold;
-      box-shadow: 0 2px 10px rgba(45,143,78,0.08);
+      box-shadow: 0 1px 4px rgba(45,143,78,0.10);
       z-index: 2;
     }
     .calendar-table td.in-range {
@@ -116,36 +115,31 @@
       opacity: 0.6;
     }
     .calendar-footer {
-      margin-top: 1.5rem;
+      margin-top: 0.6rem;
       text-align: center;
-      font-size: 1.07rem;
+      font-size: 0.96rem;
       color: #2d8f4e;
-      min-height: 1.3em;
+      min-height: 1.2em;
+      padding-bottom: 0.1em;
+      word-break: break-word;
     }
     .calendar-footer span {
       font-weight: 600;
       color: #1f7a3b;
     }
-    .calendar-animate {
-      animation: fadeIn 0.3s;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(25px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    @media (max-width: 500px) {
+    @media (max-width: 360px) {
       .calendar-container {
-        padding: 1rem 0.2rem;
-        max-width: 99vw;
+        max-width: 260px;
+        padding: 0.6rem 0.1rem 0.5rem 0.1rem;
       }
       .calendar-title {
-        font-size: 1.1rem;
+        font-size: 0.93rem;
       }
       .calendar-table th, .calendar-table td {
-        font-size: 0.97rem;
-        padding: 0.5em 0;
-        min-width: 32px;
-        height: 36px;
+        font-size: 0.86rem;
+        min-width: 22px;
+        height: 24px;
+        padding: 0.2em 0;
       }
     }
   </style>
@@ -177,7 +171,6 @@
     const calendarFooter = document.getElementById('calendarFooter');
     const prevMonthBtn = document.getElementById('prevMonthBtn');
     const nextMonthBtn = document.getElementById('nextMonthBtn');
-    const calendarContainer = document.querySelector('.calendar-container');
 
     let today = new Date();
     today.setHours(0,0,0,0);
@@ -207,14 +200,9 @@
       return date > start && date < end;
     }
 
-    function renderCalendar(month, year, animate=true) {
+    function renderCalendar(month, year) {
       calendarBody.innerHTML = '';
-      if (animate) {
-        calendarBody.classList.remove('calendar-animate');
-        void calendarBody.offsetWidth; // trigger reflow
-        calendarBody.classList.add('calendar-animate');
-      }
-      const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
+      const monthName = new Date(year, month).toLocaleString('default', { month: 'short' });
       calendarTitle.textContent = `${monthName} ${year}`;
       // Get first and last day of the month
       const firstDay = new Date(year, month, 1);
@@ -269,7 +257,7 @@
       } else if (arrivalDate && !departureDate) {
         calendarFooter.textContent = 'Please select your departure date.';
       } else {
-        calendarFooter.innerHTML = `Arrival: <span>${formatDate(arrivalDate)}</span> &nbsp; Departure: <span>${formatDate(departureDate)}</span>`;
+        calendarFooter.innerHTML = `Arrival: <span>${formatDate(arrivalDate)}</span> <br>Departure: <span>${formatDate(departureDate)}</span>`;
       }
     }
 
@@ -283,7 +271,7 @@
         arrivalDate = date;
         departureDate = null;
       }
-      renderCalendar(currentMonth, currentYear, false);
+      renderCalendar(currentMonth, currentYear);
     }
 
     prevMonthBtn.addEventListener('click', function() {
@@ -293,7 +281,7 @@
       } else {
         currentMonth--;
       }
-      renderCalendar(currentMonth, currentYear, true);
+      renderCalendar(currentMonth, currentYear);
     });
 
     nextMonthBtn.addEventListener('click', function() {
@@ -303,11 +291,11 @@
       } else {
         currentMonth++;
       }
-      renderCalendar(currentMonth, currentYear, true);
+      renderCalendar(currentMonth, currentYear);
     });
 
     // Initial render
-    renderCalendar(currentMonth, currentYear, false);
+    renderCalendar(currentMonth, currentYear);
   </script>
 </body>
 </html>
